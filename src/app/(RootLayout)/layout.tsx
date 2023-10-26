@@ -1,5 +1,4 @@
 import RootLayoutNavbar from "@/components/Shared/RootLayoutNavbar";
-import { Flowbite } from "flowbite-react";
 import React from "react";
 
 export default function RootLayout({
@@ -10,7 +9,9 @@ export default function RootLayout({
   return (
     <>
       <RootLayoutNavbar />
-      {children}
+      <section className="dark:bg-darkBg min-h-screen dark:text-white">
+        {children}
+      </section>
     </>
   );
 }
