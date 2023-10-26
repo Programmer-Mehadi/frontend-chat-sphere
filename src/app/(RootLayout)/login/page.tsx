@@ -4,7 +4,10 @@ import SubmitButton from "@/components/Forms/Buttons/SubmitButton";
 import SpinerLoader from "@/components/Loader/SpinerLoader";
 import { countryList } from "@/lib/codeList";
 import { serverURL } from "@/lib/serverURL";
-import { setTokenOnLocalStorage } from "@/services/authServices";
+import {
+  getTokenOnLocalStorage,
+  setTokenOnLocalStorage,
+} from "@/services/authServices";
 import axios from "axios";
 import { Button, Checkbox, Label, TextInput } from "flowbite-react";
 import Link from "next/link";
@@ -17,6 +20,10 @@ const LoginPage = () => {
   const router = useRouter();
   const [selectCode, setSelectCode] = useState(countryCodeList[0].code);
   const [loading, setLoading] = useState(false);
+  const token = getTokenOnLocalStorage("chat-sphere-token");
+  if (token || token !== "") {
+    router.push("/");
+  }
   const [data, setData] = useState({
     email: "",
     password: "",
@@ -81,95 +88,105 @@ const LoginPage = () => {
   }
 
   return (
-    <div className="flex lg:justify-center lg:items-center h-full ">
-      <div className="w-full grid md:grid-cols-2 gap-8 mx-auto h-full  dark:bg-darkBg">
-        <div className="bg-LightGreen dark:bg-TealGreenDark flex flex-col justify-center items-center py-8">
-          <img
-            className="w-10 md:w-20 lg:w-28"
-            src={"https://cdn.usbrandcolors.com/images/logos/whatsapp-logo.svg"}
-            alt=""
-          />
-          <span className="text-lg md:text-2xl font-bold text-white">
-            ChatSphere
-          </span>
+    <>
+      {token ? (
+        <div className="flex min-h-screen flex-col items-center justify-between p-24">
+          <SpinerLoader />
         </div>
-        <form
-          onSubmit={(e) => submitForm(e)}
-          className="md:self-center flex w-full max-w-[500px] mx-auto flex-col gap-4 pt-8 pb-14 px-4"
-        >
-          <h2 className="text-xl font-semibold text-slate-700 dark:text-white text-center">
-            Login to Your Account
-          </h2>
-          {/* email */}
-          <div>
-            <div className="mb-2 block">
-              <Label htmlFor="email" value="Email" />
-            </div>
-            <div className="grid gap-4 grid-cols-[1fr]">
-              <TextInput
-                id="email"
-                placeholder="Enter your email"
-                type="text"
-                value={data?.email}
-                onChange={(e) => {
-                  setData({
-                    ...data,
-                    email: e.target.value,
-                  });
-                }}
+      ) : (
+        <div className="flex lg:justify-center lg:items-center h-full ">
+          <div className="w-full grid md:grid-cols-2 gap-8 mx-auto h-full  dark:bg-darkBg">
+            <div className="bg-LightGreen dark:bg-TealGreenDark flex flex-col justify-center items-center py-8">
+              <img
+                className="w-10 md:w-20 lg:w-28"
+                src={
+                  "https://cdn.usbrandcolors.com/images/logos/whatsapp-logo.svg"
+                }
+                alt=""
               />
-            </div>
-            {error?.email?.show && (
-              <span className="text-red-500 text-xs">
-                {error?.email?.message}*
+              <span className="text-lg md:text-2xl font-bold text-white">
+                ChatSphere
               </span>
-            )}
-          </div>
-          {/* password */}
-          <div>
-            <div className="mb-2 block">
-              <Label htmlFor="password" value="Password" />
             </div>
-            <div className="grid gap-4 grid-cols-[1fr]">
-              <TextInput
-                id="password"
-                placeholder="Enter password"
-                type="text"
-                value={data?.password}
-                onChange={(e) => {
-                  setData({
-                    ...data,
-                    password: e.target.value,
-                  });
-                }}
-              />
-            </div>
-          </div>
-          {error?.password?.show && (
-            <span className="text-red-500 text-xs">
-              {error?.password?.message}*
-            </span>
-          )}
-          {loading ? (
-            <div className="flex items-center justify-center">
-              <div className="text-gray-500 rounded-[4px] bg-gray-300 w-full py-1 px-8 text-center cursor-not-allowed">
-                <SpinerLoader /> Loading...
+            <form
+              onSubmit={(e) => submitForm(e)}
+              className="md:self-center flex w-full max-w-[500px] mx-auto flex-col gap-4 pt-8 pb-14 px-4"
+            >
+              <h2 className="text-xl font-semibold text-slate-700 dark:text-white text-center">
+                Login to Your Account
+              </h2>
+              {/* email */}
+              <div>
+                <div className="mb-2 block">
+                  <Label htmlFor="email" value="Email" />
+                </div>
+                <div className="grid gap-4 grid-cols-[1fr]">
+                  <TextInput
+                    id="email"
+                    placeholder="Enter your email"
+                    type="text"
+                    value={data?.email}
+                    onChange={(e) => {
+                      setData({
+                        ...data,
+                        email: e.target.value,
+                      });
+                    }}
+                  />
+                </div>
+                {error?.email?.show && (
+                  <span className="text-red-500 text-xs">
+                    {error?.email?.message}*
+                  </span>
+                )}
               </div>
-            </div>
-          ) : (
-            <SubmitButton text="Login" />
-          )}
-          <div>
-            <span className="text-slate-700 dark:text-white">
-              Don{"'"}t have an account?{" "}
-              <Link className="text-TealGreen" href="/register">
-                Register
-              </Link>{" "}
-            </span>
+              {/* password */}
+              <div>
+                <div className="mb-2 block">
+                  <Label htmlFor="password" value="Password" />
+                </div>
+                <div className="grid gap-4 grid-cols-[1fr]">
+                  <TextInput
+                    id="password"
+                    placeholder="Enter password"
+                    type="text"
+                    value={data?.password}
+                    onChange={(e) => {
+                      setData({
+                        ...data,
+                        password: e.target.value,
+                      });
+                    }}
+                  />
+                </div>
+              </div>
+              {error?.password?.show && (
+                <span className="text-red-500 text-xs">
+                  {error?.password?.message}*
+                </span>
+              )}
+              {loading ? (
+                <div className="flex items-center justify-center">
+                  <div className="text-gray-500 rounded-[4px] bg-gray-300 w-full py-1 px-8 text-center cursor-not-allowed">
+                    <SpinerLoader /> Loading...
+                  </div>
+                </div>
+              ) : (
+                <SubmitButton text="Login" />
+              )}
+              <div>
+                <span className="text-slate-700 dark:text-white">
+                  Don{"'"}t have an account?{" "}
+                  <Link className="text-TealGreen" href="/register">
+                    Register
+                  </Link>{" "}
+                </span>
+              </div>
+            </form>
           </div>
-        </form>
-      </div>
-    </div>
+        </div>
+      )}
+    </>
   );
 };
 
