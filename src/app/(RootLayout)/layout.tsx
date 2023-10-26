@@ -9,7 +9,7 @@ export default function RootLayout({
   return (
     <>
       <RootLayoutNavbar />
-      <section className="dark:bg-darkBg min-h-screen dark:text-white">
+      <section className="dark:bg-darkBg min-h-rootLayoutContainerHeight dark:text-white h-full grid">
         {children}
       </section>
     </>

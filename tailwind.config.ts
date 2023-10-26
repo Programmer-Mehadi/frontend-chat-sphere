@@ -18,6 +18,13 @@ const config: Config = {
         darkBg: "#1E262C",
         darkSidebarBg: "#1E262C",
         darkNavbarBg: "#1D1D1D",
+        TealGreen: "#128C7E",
+        TealGreenDark: "#075E54",
+        LightGreen: "#25D366",
+        Blue: "#34B7F1",
+      },
+      minHeight: {
+        rootLayoutContainerHeight: "calc(100vh - 48px)",
       },
     },
   },

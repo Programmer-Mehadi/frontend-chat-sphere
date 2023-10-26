@@ -42,7 +42,7 @@ const RootLayoutNavbar = () => {
     htmlTag?.classList.remove(presentTheme === "light" ? "dark" : "light");
   }, []);
   return (
-    <Navbar fluid className="dark:bg-darkNavbarBg">
+    <Navbar fluid className="dark:bg-darkNavbarBg shadow-sm">
       <Navbar.Brand href="https://flowbite-react.com">
         <span className="self-center whitespace-nowrap text-xl font-semibold dark:text-white">
           Chat Sphere
@@ -57,7 +57,6 @@ const RootLayoutNavbar = () => {
             htmlTag?.classList.remove(switch2 ? "dark" : "light");
             setSwitch2(!switch2);
           }}
-          className="peer-checked:bg-green-500"
         />
         <Navbar.Toggle />
       </div>
